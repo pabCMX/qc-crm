@@ -14,7 +14,7 @@ export const users = pgTable('users', {
   passwordHash: text('password_hash').notNull(),
   role: userRoleEnum('role').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdateNow(),
 });
 
 // Client Sample Batches table
@@ -109,10 +109,16 @@ export const memos = pgTable('memos', {
 });
 
 // Memo Error Links table (many-to-many)
-export const memoErrorLinks = pgTable('memo_error_links', {
-  memoId: uuid('memo_id').notNull().references(() => memos.id),
-  caseErrorId: uuid('case_error_id').notNull().references(() => caseErrors.id),
-});
+export const memoErrorLinks = pgTable(
+  'memo_error_links',
+  {
+    memoId: uuid('memo_id').notNull().references(() => memos.id),
+    caseErrorId: uuid('case_error_id').notNull().references(() => caseErrors.id),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.memoId, table.caseErrorId] }),
+  }),
+);
 
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({

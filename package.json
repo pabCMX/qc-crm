@@ -14,7 +14,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

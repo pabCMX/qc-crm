@@ -11,7 +11,12 @@ export default async function DashboardPage() {
   }
 
   // Redirect to role-specific dashboard
-  const userRole = session.user.role as UserRole;
+  const userRole = session.user.role;
+ 
+ // Validate role exists in UserRole enum
+ if (!Object.values(UserRole).includes(userRole as UserRole)) {
+   redirect('/auth/login');
+ }
   
   switch (userRole) {
     case UserRole.ANALYST:

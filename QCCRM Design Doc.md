@@ -125,9 +125,14 @@ This document outlines the design for a new Quality Control (QC) Client File Rev
 *   **NFR03 (Scalability):** The system should handle the current expected load of monthly samples and user activity, with consideration for moderate growth (e.g., 20-50% increase in users/data over 2 years).
 *   **NFR04 (Reliability):** The system should be stable and available during working hours. Data integrity is critical.
 *   **NFR05 (Security):**
-    *   Secure user authentication and authorization.
-    *   Protection against common web vulnerabilities (e.g., XSS, SQL Injection).
-    *   Sensitive data should be handled appropriately.
+     *   Secure user authentication and authorization.
+     *   Protection against common web vulnerabilities (e.g., XSS, SQL Injection).
+     *   Sensitive data should be handled appropriately.
+    *   Implement rate limiting for authentication endpoints.
+    *   Use HTTPS in production with proper SSL/TLS configuration.
+    *   Regular security dependency updates and vulnerability scanning.
+    *   Password policy enforcement (minimum length, complexity).
+    *   Session timeout and secure session management.
 *   **NFR06 (Maintainability):** Code should be well-structured, commented, and version-controlled. The chosen technology stack should support long-term maintenance.
 *   **NFR07 (Deployability):** The application must be deployable on team computers (Windows/macOS/Linux) using a self-contained package (e.g., Docker containers). It should also be deployable to a standard server environment if approved.
 *   **NFR08 (Extensibility):** The architecture should allow for the addition of new features and modules with reasonable effort.
@@ -271,7 +276,13 @@ Key entities:
     3.  Run `docker-compose up -d` to build and start the application containers.
     4.  Access the application via `http://localhost:3000`.
 *   Database persistence will be managed using Docker volumes to ensure data is not lost when containers are stopped/restarted.
-*   Regular database backups will be the responsibility of the team managing the self-hosted instances (manual script or simple scheduled task initially).
+ *   Regular database backups will be the responsibility of the team managing the self-hosted instances (manual script or simple scheduled task initially).
+*   **Backup Strategy:**
+    *   Automated daily PostgreSQL dumps using pg_dump in a scheduled container.
+    *   Backup retention policy (e.g., keep daily backups for 30 days, weekly for 12 weeks).
+    *   Backup storage location outside the application directory.
+    *   Documented restore procedures for disaster recovery.
+*   **Monitoring:** Basic health checks for database connectivity and disk space monitoring.
 
 #### 10.2. Secondary: General Server Hosting (If Approved)
 

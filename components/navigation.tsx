@@ -17,7 +17,6 @@ export function Navigation() {
     switch (role) {
       case UserRole.ANALYST:
         return [
-          ...baseItems,
           { name: 'My Cases', href: '/analyst/cases' },
           { name: 'Dashboard', href: '/analyst/dashboard' },
         ];

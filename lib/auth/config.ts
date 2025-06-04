@@ -30,9 +30,6 @@ export const authOptions: NextAuthOptions = {
           }
 
           const foundUser = user[0];
-          if (!foundUser) {
-            return null;
-          }
 
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
@@ -49,7 +46,7 @@ export const authOptions: NextAuthOptions = {
             role: foundUser.role,
           };
         } catch (error) {
-          console.error('Authentication error:', error);
+          console.error('Authentication failed for user:', credentials.username);
           return null;
         }
       },
