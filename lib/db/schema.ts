@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, pgEnum, boolean, integer, jsonb, uuid, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, pgEnum, boolean, integer, jsonb, uuid, varchar, primaryKey } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // Enums
@@ -14,7 +14,7 @@ export const users = pgTable('users', {
   passwordHash: text('password_hash').notNull(),
   role: userRoleEnum('role').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow().$onUpdateNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 // Client Sample Batches table
