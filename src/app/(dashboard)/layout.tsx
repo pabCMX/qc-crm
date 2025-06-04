@@ -1,4 +1,4 @@
-import { Navigation } from '@/components/navigation';
+import { Navigation } from '@/src/app/components/navigation';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth/config';
