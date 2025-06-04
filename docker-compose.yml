@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: qc-crm-postgres
+    environment:
+      POSTGRES_DB: qc_crm_db
+      POSTGRES_USER: qc_user
+      POSTGRES_PASSWORD: qc_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./lib/db/migrations:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  nextjs-app:
+    build: .
+    container_name: qc-crm-app
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://qc_user:qc_password@postgres:5432/qc_crm_db
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: your-secret-key-change-in-production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+
+volumes:
+  postgres_data: 
